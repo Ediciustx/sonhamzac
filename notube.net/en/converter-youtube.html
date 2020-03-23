@@ -1,0 +1,462 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+
+<!-- Mirrored from notube.net/en/converter-youtube by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Mar 2020 10:14:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="youtube mp3, mp3 converter, youtube converter, youtube download, youtube mp3 download, youtube mp3 download, youtube audio, mp3 youtube, youtube to mp3, youTube mp3 converter, yt mp3, ytb, download youtube" />
+<meta property="og:site_name" content="YouTube MP3 and YouTube MP4 free video converter - noTube">
+<meta property="og:locale" content="en">
+<meta property="article:author" content="https://www.facebook.com/notube">
+<meta property="article:publisher" content="https://www.facebook.com/notube">
+<meta property="og:title" content="YouTube MP3 and YouTube MP4 free video converter - noTube">
+<meta property="og:description" content="Download YouTube videos in YouTube MP3 or YouTube MP4 format for free with our converter! Converting YouTube videos has never been so easy and fast.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="converter-youtube.html">
+<meta property="og:image" content="../../cdn.notube.net/images/general/cover.jpg">
+<meta name="twitter:site" content="@ilovenotube">
+<meta name="twitter:creator" content="@ilovenotube">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="converter-youtube.html">
+<meta name="twitter:title" content="YouTube MP3 and YouTube MP4 free video converter - noTube">
+<meta name="twitter:description" content="Download YouTube videos in YouTube MP3 or YouTube MP4 format for free with our converter! Converting YouTube videos has never been so easy and fast. @ilovenotube">
+<meta name="twitter:image" content="../../cdn.notube.net/images/general/cover_tw0cc1.jpg?a">
+<script src="../cdn-cgi/apps/head/nUoHLEcseCGCBFxDZ3Cr2Kk9Tno.js"></script><link rel="shortcut icon" href="../../cdn.notube.net/images/general/favicon.png" />
+<link rel="canonical" href="converter-youtube.html" />
+<link rel="stylesheet" href="../../cdn.notube.net/templates/notube/css/main.css" />
+<script src="../../cdn.notube.net/templates/notube/js/jquery.min.js" type="bf7900b34eb7683a1d276291-text/javascript"></script>
+<script src="../../cdn.notube.net/templates/notube/js/bootstrap.min.js" type="bf7900b34eb7683a1d276291-text/javascript"></script>
+<script src="../../cdn.notube.net/templates/notube/js/owl.carousel.min.js" type="bf7900b34eb7683a1d276291-text/javascript"></script>
+<script src="../../cdn.notube.net/templates/notube/js/waypoints.min.js" type="bf7900b34eb7683a1d276291-text/javascript"></script>
+<script src="../../cdn.notube.net/templates/notube/js/main.js" type="bf7900b34eb7683a1d276291-text/javascript"></script>
+<title>YouTube mp3 and YouTube mp4 converter - noTube</title>
+<meta name="description" content="Convert your YouTube videos to YouTube mp3 or YouTube mp4 format in seconds with this YouTube converter!" />
+<link rel="alternate" hreflang="en" href="converter-youtube.html" />
+<link rel="alternate" hreflang="es" href="../es/youtube-convertidor.html" />
+<link rel="alternate" hreflang="fr" href="../fr/youtube-convertisseur.html" />
+<link rel="alternate" hreflang="de" href="../de/konverter-youtube.html" />
+<script type="bf7900b34eb7683a1d276291-text/javascript">
+
+    jQuery(window).on('load', function() {
+        new JCaption('img.caption');
+        var timer = 0;
+        var $textDownloading = jQuery(".page-title-desc");
+        jQuery(".page-title-search").submit(function(event) {
+            event.preventDefault();
+            keyword = jQuery("#keyword").val();
+            format = jQuery("#myDropdown").val();
+            if (keyword.trim() == "" || keyword.trim().length < 3)
+                return;
+            console.log(keyword);
+            console.log("Start from http : " + keyword.startsWith("http"));
+			keyword = keyword.replace(/(\?list=)(.*)/,'');
+			console.log("After transformation : " + keyword);
+            if (keyword.startsWith("http") == true) {
+                if (keyword.startsWith("https://www.youtube.com/watch?v=") == true 
+                    || keyword.startsWith("https://youtu.be/") == true 
+                    || keyword.startsWith("https://m.youtube.com/") == true
+                    // 12/2018
+                    || keyword.startsWith("https://twitter.com/") == true
+                    || keyword.startsWith("https://www.dailymotion.com/") == true
+                    || keyword.startsWith("https://www.instagram.com/") == true
+					|| keyword.startsWith("https://www.facebook.com/") == true
+                   ) {
+                    DOWNL(keyword, format);
+                } else {
+                    alert("Please enter a valid URL");
+                }
+            } else {
+                jQuery("#suggestion").show();
+                position = jQuery("#suggestion").offset().top - 80;
+                jQuery("html, body").animate({
+                    scrollTop: position
+                }, 1000);
+                keyword = jQuery("#keyword").val();
+                format = jQuery("#myDropdown").val();
+                console.log(keyword + "#" + format);
+                jQuery.ajax({
+                    url: 'https://s41.notube.net//suggestion.php',
+                    type: 'POST',
+                    data: 'keyword=' + keyword + '&format=' + format,
+                    dataType: 'html',
+                    success: function(code_html, statut) {
+                        jQuery("#suggestion").html(code_html);
+                    },
+                    error: function(result, statut, error1) {},
+                    complete: function(result, statut) {}
+                });
+            }
+        });
+        DOWNL = function(url, format, origine = "") {
+            jQuery(".page-title-search, .page-title h1 + h2").hide();
+            jQuery("#download").show();
+            jQuery("#expired").hide();
+			jQuery("#social-media").show();
+            if (origine == "suggestion") {
+                jQuery("html, body").animate({
+                    scrollTop: jQuery("#main").offset().top
+                }, 500);
+                setTimeout(function() {
+                    jQuery("#suggestion").hide();
+                }, 1000);
+            }
+            jQuery(".page-title h1").html("0%");
+            $textDownloading.html("The video download will start...");
+            jQuery.ajax({
+                url: 'https://s49.notube.net//recover_weight.php',
+                type: 'POST',
+                data: 'url=' + url + '&format=' + format + '&lang=en',
+                dataType: 'html',
+                success: function(result, statut) {
+                    obj = JSON.parse(result);
+                    //console.log(obj.url_mp4_youtube);
+                    //console.log(obj.weight_total);
+                    //console.log(obj.name_mp4);
+                    //console.log(obj.titre_mp4);
+                    //console.log(obj.token);
+                    //console.log(obj.VevoUSA);
+					//console.log(obj.VideoDuration);
+                    // alert(obj.VevoUSA);
+                    if (obj.VevoUSA=="1") {
+                        $textDownloading.html("This video is protected by copyright. <a href='https://notube.net/' style='color:#ec4f2e;'>Try another video!</a>");
+					} else if (obj.VideoDuration=="1") {
+                        $textDownloading.html("Video unavailable in this format. Please try again in MP4/MP3. <a href='https://notube.net/' style='color:#ec4f2e;'>Try again!</a>");
+                    } else {
+                        $textDownloading.html("Your video is currently being downloaded. Please be patient...");
+                        jQuery.ajax({
+                            url: 'https://s49.notube.net//recover_file.php',
+                            type: 'POST',
+                            data: 'url=' + url + '&format=' + format + '&name_mp4=' + obj.name_mp4 + '&lang=en' + '&token=' + obj.token,
+                            dataType: 'html',
+                            success: function(result, statut) {
+
+                                if(result) {
+                                    try {
+                                        obj2 = JSON.parse(result);
+                                        console.log("Return"+obj2.retour);
+                                        console.log("Token"+obj2.token);  
+                                        retour = obj2.retour;
+                                        token = obj2.token;                                 
+                                    } catch(e) {
+                                        console.log("Result"+result);  
+                                        retour = result;
+                                    }
+                                }
+                                if (retour == "OK") {
+                                    $textDownloading.html("The download is complete!");
+                                } else if (retour=="HS") {    
+                                    $textDownloading.html("Video unavailable in this format. Please try again in MP4/MP3. <a href='https://notube.net/' style='color:#ec4f2e;'>Try again!</a>");
+                                } else {   
+                                    $textDownloading.html(retour);
+                                    clearInterval(VerifWeight);
+                                }  
+                                if (retour=="OK") { 
+                                    if (format=="mp3" || format=="3gp" || format=="flv" || format=="m4a") {
+                                        $textDownloading.html("Conversion to format " + format + " in progress...");
+                                
+                                        jQuery.ajax({
+                                            url: 'https://s49.notube.net//conversion.php',
+                                            type: 'POST',
+                                            data: 'token=' + token,
+                                            dataType: 'html',
+                                            success: function(result, statut) {
+                                                $textDownloading.html("Conversion complete!");
+                                                timer = 100;
+                                                jQuery(".page-title h1").html(timer + "%");
+                                                jQuery("#progressBarDownload > div").css("width", timer + "%");
+                                                setInterval(function() {
+                                                    window.location.replace("/en/download?token=" + token);
+                                                }, 1000);
+                                            },
+                                            error: function(result, statut, error1) {},
+                                            complete: function(result, statut) {}
+                                        });
+                                    } else {
+                                        timer = 100;
+                                        jQuery(".page-title h1").html(timer + "%");
+                                        jQuery("#progressBarDownload > div").css("width", timer + "%");
+                                        setInterval(function() {
+                                            window.location.replace("/en/download?token=" + token);
+                                        }, 1000);
+                                    }
+                                }
+                            },
+                            error: function(result, statut, error1) {},
+                            complete: function(result, statut) {}
+                        });
+                    
+                        VerifWeight = setInterval(function() {
+                            jQuery(".page-title h1").html(timer + "%");
+                            jQuery("#progressBarDownload > div").css("width", timer + "%");
+                            jQuery.ajax({
+                                url: 'https://s49.notube.net//weight.php',
+                                type: 'GET',
+                                data: 'name_mp4=' + obj.name_mp4,
+                                dataType: 'html',
+                                success: function(situation, statut) {
+                                    console.log("Total : " + obj.weight_total + " / Situation : " + situation);
+
+                                    function isNumber(n) {
+                                        return !isNaN(parseFloat(n)) && isFinite(n);
+                                    }
+                                    if (!isNumber(situation)) {
+                                        console.log("No numeric");
+                                    } else {
+                                        var RealP = Math.round(100 / (obj.weight_total / situation));
+                                        console.log("P% real :" + RealP);
+                                        if (format == "mp4") {
+                                            timer = RealP;
+                                        } else {
+                                            var ReducedP = Math.round(RealP - ((RealP * 20) / 100));
+                                            console.log("P% --- :" + ReducedP);
+                                            console.log("Timer :" + timer);
+                                            if (ReducedP < 80) {
+                                                timer = ReducedP;
+                                            } else {
+                                                if (timer < 80) {
+                                                    timer = 80;
+                                                }
+                                                timer = timer + Math.floor(Math.random() * 3) + 1;
+                                            }
+                                        }
+                                        if (timer > 99) {
+                                            $textDownloading.html("Conversion to format " + format + " still in progress... a little while!");
+                                            timer = 99;
+                                        }
+                                    }
+                                },
+                                error: function(result, statut, error1) {},
+                                complete: function(result, statut) {}
+                            });
+                        }, 2000);
+                    }  
+                },
+                error: function(result, statut, error1) {},
+                complete: function(result, statut) {}
+            });
+        }
+            });
+</script>
+</head>
+<body class="home1 home">
+<div id="wrapper">
+<div id="page-loader">
+<span class="page-loading">
+<img src="../../cdn.notube.net/templates/notube/images/loader.png" alt="loading">
+</span>
+</div>
+<header id="header" class="site-header light-header">
+<div class="container clearfix">
+<div class="site-brand">
+<a class="logo" href="../index.html"><img src="../../cdn.notube.net/images/general/logo.png" alt="noTube" /></a>
+<a class="logo light-logo" href="../index.html"><img src="../../cdn.notube.net/images/general/logo_scroll.png" alt="noTube" /></a>
+</div>
+<div class="dropdown dropleft login-button">
+<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+<span class="flag flag-en"></span>
+</button>
+<ul class="dropdown-menu dropdown-menu-center" aria-labelledby="dropdownMenu1" style="min-width:70px;">
+<li>
+<a href="../convert-de/de.html" title="Deutsch" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangDE('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-de"></span>
+<span>DE</span>
+</a>
+</li>
+<li>
+<a href="../convert-en/en.html" title="English" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangEN('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-en"></span>
+<span>EN</span>
+</a>
+</li>
+<li>
+<a href="../convert-es/es.html" title="Español" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangES('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-es"></span>
+<span>ES</span>
+</a>
+</li>
+<li>
+<a href="../convert-fr/fr.html" title="Français" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangFR('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-fr"></span>
+<span>FR</span>
+</a>
+</li>
+<li>
+<a href="../convert-it/it.html" title="Italiano" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangIT('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-it"></span>
+<span>IT</span>
+</a>
+</li>
+<li>
+<a href="../convert-pt/pt.html" title="Português" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangPT('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-pt"></span>
+<span>PT</span>
+</a>
+</li>
+<li>
+<a href="../convert-ru/ru.html" title="русский" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangPT('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-ru"></span>
+<span>RU</span>
+</a>
+</li>
+<li>
+<a href="../convert-tr/tr.html" title="Türk" style="padding:5px 8px" onclick="if (!window.__cfRLUnblockHandlers) return false; setLangTR('clicklink', 'yes', 30)" data-cf-modified-bf7900b34eb7683a1d276291-="">
+<span class="flag flag-tr"></span>
+<span>TR</span>
+</a>
+</li>
+</ul>
+</div>
+<nav class="main-menu">
+<span class="mobile-btn"><i class="ti ti-menu"></i></span>
+<ul>
+<li class="item-101 active deeper has-child"><a href="../convert-en/en.html" rel="">Home</a>
+<li class="item-108"><a href="faq.html">Converter : How does it work</a></li>
+<li class="item-107"><a href="contact.html">Contact us</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="site-main" style="padding:0" ;>
+<section class="page-title" style="background-image: url('../../cdn.notube.net/images/general/wallpaper.jpg');margin-bottom:-40px;" ">
+<div class="container">
+<h1>YouTube mp3 and mp4 converter</h1>
+
+<h2 class="page-title-desc-noajax">The best free and fast YouTube converter in mp3, mp4 and other formats!</h2>
+
+<div class="row">
+<div class="col-md-10 col-md-offset-1">
+<form action="#" id="form1" method="get" class="page-title-search">
+<input id="keyword" name="keyword" type="search" placeholder="YouTube Url, keywords...">
+<select id="myDropdown" class="dropbtn">
+<option value="mp3">MP3</option>
+<option value="mp4">MP4</option>
+<option value="mp4hd">MP4 HD</option>
+<option value="3gp">3GP</option>
+<option value="flv">FLV</option>
+<option value="m4a">M4A</option>
+</select>
+
+<input type="submit" value="OK" onClick="if (!window.__cfRLUnblockHandlers) return false; window.open('https://abskursin.com/afu.php?zoneid=2944650', '_blank');" data-cf-modified-bf7900b34eb7683a1d276291-="">
+</form>
+
+<div id="download" style="display:none;">
+<div id="progressBarDownload">
+<div></div>
+</div>
+
+</div>
+</div>
+</div>
+<p class="page-title-desc">Enter the url of a YouTube video - YouTube videos in the YouTube Converter</p>
+<div id="social-media" class="social-media" style="display:none;">
+<div style="vertical-align: 8px;display:inline-block;margin-right:4px;">Tell us how much you love noTube! </div>
+
+<a href="https://twitter.com/ilovenotube?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-screen-name="false" data-show-count="false">Follow @ilovenotube</a><script async src="../../platform.twitter.com/widgets.js" charset="utf-8" type="bf7900b34eb7683a1d276291-text/javascript"></script>
+</div>
+</div>
+</section>
+<div class="home-body">
+<section class="section" id="suggestion" style="display:none;margin-top:100px;" ">
+<div class="container">
+<h2 class="section-title"><span class="special-text">Suggestions</span></h2>
+<p class="section-desc"><img src="../../cdn.notube.net/templates/notube/images/loader_search.gif" alt="Loading..." /></p>
+<div class="row">
+<div class="service-center"></div>
+</div>
+</div>
+</section>
+<section class="section customer-say light-bg">
+<div class="container">
+<h2 class="section-title">YouTube converter, simply download your favorite video content</h2>
+<div class="testimonials">
+<div class="testi-preview">
+<div class="owl-carousel">
+<div class="item">
+Using our converter, you can easily convert YouTube videos into several formats: mp3 (audio files) or mp4 (video files) and download them for free. This service is a free conversion (video converter) and download tool for computers, tablets and mobile devices. To access our video download service, you don't need to create an account, all you need is a valid YouTube URL.
+<br /><br />
+<h2>How to get the YouTube video content of your choice</h2>
+The interface has been simplified so that users can easily download and upload YouTube videos. With oTube videos are always converted in the best possible quality. You can quickly and easily have videos and content from your favorite YouTube channels wherever you are.
+<br /><br />
+<h2>Save time with the noTube</h2> converter
+Don't waste any more time searching for a fast and reliable YouTube to mp3 converter that gives you the ability to download videos from YouTube! With noTube, you can trust, no spam, no viruses. Our developers have worked hard to offer you the best YouTube converter available on the internet! The noTube service will easily respond to your request to download YouTube.
+<br /><br />
+<h2>Use noTube as a mobile application to convert your videos</h2>
+It's very easy to use noTube as a mobile application or tablet! Simply create a shortcut to the site on the desktop of your mobile phone or tablet and you will have your converter completely free at hand. You can upload your YouTube content now. </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div id="bottom" class="site-bottom">
+<div class="container">
+<div class="row">
+<div class="col-md-3 col-sm-6 col-xs-6">
+<div class="moduletable">
+<div class="titleFooter">About</div>
+<section class="section">
+<div class="textwidget">
+<p>noTube is a tool that will allow you to download YouTube, Dailymotion and others sites videos.</p>
+<p>You can download a YouTube video and convert it into the format of your choice.</p>
+</div>
+</section>
+</div>
+</div>
+<div class="col-md-3 col-sm-6 col-xs-6">
+<div class="moduletable">
+<div class="titleFooter">Supported websites</div>
+<ul>
+<li class="item-116">YouTube</li>
+<li class="item-117">Dailymotion</li>
+<li class="item-128">Facebook</li>
+<li class="item-128">Instagram</li>
+<li class="item-128">Twitter</li>
+</ul>
+</div>
+</div>
+<div class="col-md-3 col-sm-6 col-xs-6">
+<div class="moduletable">
+<div class="titleFooter">Menu</div>
+<ul>
+<li class="item-125"><a href="converter-youtube.html" rel="">YouTube converter</a></li>
+<li class="item-126"><a href="../convert-en/en.html" rel="">Home</a></li>
+<li class="item-127"><a href="faq.html" rel="">FAQ</a></li>
+<li class="item-115"><a href="contact.html" rel="">Contact</a></li>
+<li class="item-115"><a href="terms.html" rel="">TOS & Privacy policy</a></li>
+<li class="item-115"><a href="dmca.html" rel="">DMCA</a></li>
+</ul>
+</div>
+</div>
+<div class="col-md-3 col-sm-6 col-xs-6">
+<div class="moduletable">
+<div class="titleFooter">Stay informed!</div>
+<div class="tiva-social">
+
+<a target="_blank" rel="nofollow" href="https://twitter.com/ilovenotube"><i class="fa fa-twitter"></i></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer id="footer" class="site-footer">
+<div class="container">
+<div class="row">
+<div class="col-md-8 col-sm-9">
+<div class="copyright"><img src="../../cdn.notube.net/images/icons/kopimi.png" alt="" style="width:28px;margin-right:6px;" /> 2020 noTube. No rights reserved.</div>
+</div>
+<div class="col-md-4 col-sm-3">
+<a class="back-to-top" href="#">Back to top</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="bf7900b34eb7683a1d276291-|49" defer=""></script></body>
+
+<!-- Mirrored from notube.net/en/converter-youtube by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Mar 2020 10:14:15 GMT -->
+</html>
